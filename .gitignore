@@ -162,5 +162,4 @@ cython_debug/
 #.idea/
 
 setup_snowflake_account_users.sql
-setup_dlt_role.sql
 test.sql
