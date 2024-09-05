@@ -163,3 +163,5 @@ cython_debug/
 
 setup_snowflake_account_users.sql
 test.sql
+setup_extract_loader_user.sql
+secrets.toml
