@@ -166,3 +166,4 @@ setup_dlt_role.sql
 test.sql
 setup_extract_loader_user.sql
 secrets.toml
+db.txt
