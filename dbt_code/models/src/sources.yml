@@ -1,0 +1,6 @@
+sources:
+    - name: arbetskollen
+      schema: staging
+      tables: 
+        - name: stg_job_ads
+          identifier: data_field_job_ads
