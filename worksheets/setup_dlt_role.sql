@@ -19,5 +19,5 @@ SHOW GRANTS TO ROLE arbetskollen_dlt_role;
 
 SHOW GRANTS TO USER herman;
 
-GRANT ROLE arbetskollen_dlt_role TO USER   ;
+GRANT ROLE arbetskollen_dbt_role TO USER ;
 -----------------------------------------------------------------------------
