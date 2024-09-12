@@ -11,7 +11,7 @@ def _get_ads(url_for_search, params):
     response.raise_for_status()  # check for http errors
     return json.loads(response.content.decode('utf8'))
 
-@dlt.resource(write_disposition="append")
+@dlt.resource(write_disposition="replace")
 def jobsearch_resource(params):
     url = "https://jobsearch.api.jobtechdev.se"
     url_for_search = f"{url}/search"
@@ -33,8 +33,9 @@ def run_pipeline(query, table_name):
 if __name__ == "__main__":
     # specify the pipeline name, destination and dataset name when configuring pipeline,
     # otherwise the defaults will be used that are derived from the current script name
+    # business intelligence, data engineer, data analyst
     working_directory = Path(__file__).parent
     os.chdir(working_directory)
-    query = "business intelligence"
+    query = "data science"
     table_name = "data_field_job_ads"
     run_pipeline(query,table_name)
