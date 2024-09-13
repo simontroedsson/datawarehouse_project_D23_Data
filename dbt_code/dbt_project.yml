@@ -43,5 +43,5 @@ models:
     fct: 
       +schema: warehouse
 
-    mart: 
-      +schema: marts
+    marts: 
+      +schema: mart
