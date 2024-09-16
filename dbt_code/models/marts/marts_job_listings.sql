@@ -23,7 +23,16 @@ SELECT
     jd.scope_of_work_min,
     jd.scope_of_work_max,
     dd.application_deadline,
-    pd.publication_date
+    dd.day_name_deadline,
+    dd.month_name_deadline,
+    dd.day_of_month_deadline,
+    pd.publication_date,
+    pd.month_name_publication,
+    pd.day_of_month_publication,
+    pd.week_publication,
+    pd.month_publication,
+    pd.year_publication
+
 FROM fct_job_ads AS f
 LEFT JOIN job_details AS jd
     ON f.job_details_key = jd.job_details_id

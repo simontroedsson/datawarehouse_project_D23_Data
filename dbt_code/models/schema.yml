@@ -1,0 +1,360 @@
+models: 
+  - name: dim_auxilliary_attributes
+    description: "Information about requirements for the position "
+    columns: 
+    - name: auxilliary_attributes_id
+      description: "Primary key, A unique identifier for each attribute"
+      data_tests:
+      - unique
+      - not_null
+
+    - name: experience_required
+      description: "If experience is requierd"
+      data_tests:
+      - not_null
+      - accepted_values:
+         values: ['True', 'False']
+
+    - name: driving_license_required
+      description: "If a drivers licens is required"
+      data_tests: 
+      - not_null
+      - accepted_values:
+         values: ['True', 'False']
+  
+    - name: access_to_own_car
+      description: "If access to own car is required"
+      data_tests: 
+      - not_null
+      - accepted_values:
+         values: ['True', 'False']
+
+  - name: dim_deadline_date 
+    description: "Information about the deadline for the application"
+    columns: 
+    - name: deadline_date_id
+      description: "Primary key, A unique identifier for each attribute"      
+      data_tests: 
+      - not_null
+      - unique
+
+    - name: application_deadline
+      description: "Complete date of the deadline"
+      data_tests: 
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_of_type:
+          column_type: timestamp_tz
+
+    - name: day_name_deadline
+      description: "Weekday of the deadline"
+      data_tests: 
+      - not_null
+      - accepted_values:
+          values: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+    - name: month_name_deadline
+      description: "Name of the month of the deadline"
+      data_tests: 
+      - not_null
+      - accepted_values:
+          values: ['Dec', 'Feb', 'Jan', 'Nov', 'Oct', 'Sep', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug']
+
+    - name: day_of_month_deadline
+      description: "Day of the month of the deadline"
+      data_tests: 
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 31
+
+    - name: week_deadline
+      description: "Week of the year"
+      data_tests: 
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 52
+
+    - name: month_deadline
+      description: "Month of the year"
+      data_tests: 
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 12
+
+    - name: year_deadline
+      description: "Year of the deadline"
+      data_tests: 
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 2024
+          max_value: 2025
+  
+    - name: hour_deadline
+      description: "Hour of day of the deadline  "
+      data_tests: 
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 23
+
+    - name: minute_deadline
+      description: "Minute of the day of the deadline"
+      data_tests: 
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 59
+
+  - name: fct_job_ads
+    description: "Information about the job ad "
+    columns:    
+    - name: job_ads_id
+      description: "Primary key, A unique identifier for each attribute"
+      data_tests:
+      - unique
+      - not_null
+
+    - name: job_details_key
+      description: "Ensures that all job_details_key values in the current model exist in the job_details_id column of the dim_job_details table"
+      data_tests:
+        - relationships:
+            to: ref('dim_job_details')
+            field: job_details_id
+
+    - name: employer_key
+      description: "Ensures that all employer_key values in the current model exist in the employer_id column of the dim_employer table"
+      data_tests:
+        - relationships:
+            to: ref('dim_employer')
+            field: employer_id
+
+    - name: auxilliary_key
+      description: "Ensures that all auxilliary_key values in the current model exist in the auxilliary_attributes_id column of the dim_auxilliary_attributes table"
+      data_tests:
+        - relationships:
+            to: ref('dim_auxilliary_attributes')
+            field: auxilliary_attributes_id
+
+    - name: deadline_date_key
+      description: "Ensures that all deadline_date_key values in the current model exist in the deadline_date_id column of the dim_deadline_date table"
+      data_tests:
+        - relationships:
+            to: ref('dim_deadline_date')
+            field: deadline_date_id
+
+    - name: publication_date_key
+      description: "Ensures that all publication_date_key values in the current model exist in the publication_date_id column of the dim_publication_date table"
+      data_tests:
+        - relationships:
+            to: ref('dim_publication_date')
+            field: publication_date_id
+
+    - name: relevance
+      description: "How relevent is the searchword"
+      data_tests:
+      - not_null
+
+    - name: vacancies
+      description: "How many positions are avalibel"
+      data_tests:
+      - not_null
+
+  - name: dim_employer
+    description: "Information about the employer"
+    columns:
+    - name: employer_id
+      description: "Primary key, A unique identifier for each attribute"
+      data_tests:
+      - unique
+      - not_null
+  
+    - name: employer_name
+      description: "Name of the employer for the job ad"
+      data_tests:
+      - not_null
+
+    - name: employer_workplace
+      description: "The workplace where the applicant will work"
+      data_tests:
+      - not_null
+
+    - name: workplace_city
+      description: "The city where the workplace is located "
+      data_tests:
+      - not_null
+
+    - name: application_details_email
+      description: "Email to contact if the applicant had questions"
+      data_tests:
+      - not_null
+
+    - name: employer_organization_number
+      description: "Number of the organization on the job ad"
+      data_tests:
+      - not_null
+      - dbt_expectations.expect_column_value_lengths_to_equal:
+          value: 10
+
+    - name: workplace_street_address
+      description: "Address of the workplace in the ad"
+      data_tests:
+      - not_null
+
+    - name: workplace_region
+      description: "Region of the workplace in the ad"
+      data_tests:
+      - not_null
+
+    - name: workplace_postcode
+      description: "Postcode of the workplace in the ad"
+      data_tests:
+      - not_null
+      - dbt_expectations.expect_column_values_to_match_regex:
+          regex: '^\\d{5}$|Postkod ej specificerat'
+
+    - name: workplace_country
+      description: "Country of the workplace in the ad"
+      data_tests:
+      - not_null
+      - accepted_values:
+          values: ['Sverige']
+
+  - name: dim_job_details
+    description: "Detail in the job in the job ad"
+    columns:
+    - name: job_details_id
+      description: "Primary key, A unique identifier for each attribute"
+      data_tests:
+      - unique
+      - not_null
+
+    - name: headline
+      description: "Name of the jobposition"
+      data_tests:
+      - not_null
+
+    - name: description
+      description: "Description of the job"
+      data_tests:
+      - not_null
+
+    - name: description_html_formatted
+      description: "Description in html format"
+      data_tests:
+      - not_null
+
+    - name: duration
+      description: "Lenght of the position in the job ad"
+      data_tests:
+      - not_null
+
+    - name: salary_type
+      description: "Salary for the position in the job ad"
+      data_tests:
+      - not_null
+
+    - name: working_hours_type
+      description: "Form of employment"
+      data_tests:
+      - not_null
+      - accepted_values:
+          values: ['Heltid', 'Deltid']
+
+    - name: scope_of_work_min
+      description: "Least expected amount of work in % "
+      data_tests:
+        - not_null
+        - dbt_expectations.expect_column_values_to_be_between:
+            min_value: 0
+            max_value: 100
+
+    - name: scope_of_work_max
+      description: "Most expected amount of work in %"
+      data_tests:
+        - dbt_expectations.expect_column_values_to_be_between:
+            min_value: 0
+            max_value: 100
+
+  - name: dim_publication_date
+    description: "Information about the application date"
+    columns:
+    - name: publication_date_id
+      description: "Primary key, A unique identifier for each attribute"
+      data_tests:
+      - unique
+      - not_null
+
+    - name: publication_date
+      description: "Date of publication"
+      data_tests:
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_of_type:
+          column_type: timestamp_tz
+
+    - name: day_name_publication
+      description: "Weekday of publication"
+      data_tests:
+      - not_null
+      - accepted_values:
+          values: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+    - name: month_name_publication
+      description: "Month of publication"
+      data_tests:
+      - not_null
+      - accepted_values:
+          values: ['Dec', 'Feb', 'Jan', 'Nov', 'Oct', 'Sep', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug']
+
+    - name: day_of_month_publication
+      description: "Day of month of publication"
+      data_tests:
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 31
+
+    - name: week_publication
+      description: "Week of the year" 
+      data_tests:
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 52
+
+    - name: month_publication
+      description: "Month of the year"
+      data_tests:
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 12
+
+
+    - name: year_publication
+      description: "Year of publication"
+      data_tests:
+      - not_null
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 2024
+          max_value: 2025
+
+    - name: hour_publication
+      description: "Hour of the publication of the day"
+      data_tests:
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 23
+
+    - name: minute_publication
+      description: "Moinute of the publication of the day"
+      data_tests:
+      - dbt_expectations.expect_column_values_to_be_between:
+          min_value: 1
+          max_value: 59
+
+
+
+
+  
