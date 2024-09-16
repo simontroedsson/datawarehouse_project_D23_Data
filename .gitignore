@@ -166,4 +166,7 @@ test.sql
 setup_extract_loader_user.sql
 secrets.toml
 db.txt
-Connect_data_warehouse.py
+
+maptest.py
+maptest2.py
+geo_location.py

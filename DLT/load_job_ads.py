@@ -33,7 +33,7 @@ def run_pipeline(query, table_name):
 if __name__ == "__main__":
     # specify the pipeline name, destination and dataset name when configuring pipeline,
     # otherwise the defaults will be used that are derived from the current script name
-    # business intelligence, data engineer, data analyst
+    # data science, data engineer, data analyst
     working_directory = Path(__file__).parent
     os.chdir(working_directory)
     query = "data science"
