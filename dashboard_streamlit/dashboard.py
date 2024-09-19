@@ -3,7 +3,6 @@ from connect_data_warehouse import query_job_listings
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import pandas as pd
-import altair as alt
 
 # Create some sample text
 
@@ -92,7 +91,7 @@ def layout():
         text += x+", "
     # Create and generate a word cloud image:
     font_path = 'C:/Windows/Fonts/Papyrus.ttf'
-    wordcloud = WordCloud(font_path=font_path).generate(text)
+    wordcloud = WordCloud().generate(text)
 
     # Display the generated image:
     plt.imshow(wordcloud, interpolation='bilinear')
